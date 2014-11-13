@@ -1,6 +1,9 @@
 import click
-import toleo
+import pathlib
 import prettytable
+import toleo
+import xdg.BaseDirectory
+import yaml
 
 
 class SoftwareTable(prettytable.PrettyTable):
@@ -14,14 +17,25 @@ class SoftwareTable(prettytable.PrettyTable):
                       status])
 
 
+def read_config(collection):
+    xdg_config_home = pathlib.Path(xdg.BaseDirectory.xdg_config_home)
+    config_dir = xdg_cache_home / 'toleo'
+    config_file = ( config_dir / collection ).with_suffix('.yaml')
+    if config_file.is_file():
+        with config_file.open() as f:
+            return yaml.load(f)
+    else:
+        raise FileNotFoundError('cannot read {}'.format(config_file))
+
+
 @click.command()
+@click.option('--collection', '-c', default='default')
 # @click.option('--upstream-only', '-u', 'action', flag_value='upstream')
 # @click.option('--repo-only', '-r', 'action', flag_value='repo')
 # @click.option('--verbose', '-v', count=True)
-# @click.option('--collection', '-c', default='default')
 # @click.option('--path-override', envvar='TOLEO_CONFIG_HOME')
 # @click.option('--limit', '-l')
-def cli():
+def cli(collection):
     ''' Entry point for application. '''
     table = SoftwareTable(['PACKAGE', 'PROJECT', 'AUR', 'UPSTREAM', 'STATUS'])
 
