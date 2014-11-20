@@ -8,6 +8,6 @@ setuptools.setup(
     author_email = 'carl@cgtx.us',
     url = 'https://github.com/cgtx/toleo-cli',
     packages = ['toleo_cli'],
-    install_requires = ['toleo', 'click', 'prettytable'],
+    install_requires = ['toleo', 'click', 'prettytable', 'pyxdg', 'PyYAML'],
     entry_points = {'console_scripts': ['toleo = toleo_cli:cli']}
 )
