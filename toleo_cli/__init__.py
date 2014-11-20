@@ -17,10 +17,10 @@ class SoftwareTable(prettytable.PrettyTable):
                       status])
 
 
-def read_config(collection):
+def read_config(collection='default'):
     xdg_config_home = pathlib.Path(xdg.BaseDirectory.xdg_config_home)
-    config_dir = xdg_cache_home / 'toleo'
-    config_file = ( config_dir / collection ).with_suffix('.yaml')
+    config_dir = xdg_config_home / 'toleo'
+    config_file = (config_dir / collection).with_suffix('.yaml')
     if config_file.is_file():
         with config_file.open() as f:
             return yaml.load(f)
