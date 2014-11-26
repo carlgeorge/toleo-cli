@@ -6,13 +6,13 @@ from .table import create_table
 
 
 @click.command()
-@click.option('--collection', '-c', default='default')
-def cli(collection):
+@click.option('--collection', '-c', 'collection_name', default='default')
+def cli(collection_name):
     ''' Entry point for application. '''
     xdg_config_home = pathlib.Path(xdg.BaseDirectory.xdg_config_home)
     config_dir = xdg_config_home / 'toleo'
-    collection_config = (config_dir / collection).with_suffix('.yaml')
-    collection_data = toleo.load_collection(collection_config)
-    results = toleo.process(collection_data)
+    config = (config_dir / collection_name).with_suffix('.yaml')
+    collection = toleo.Collection(config)
+    results = toleo.process(collection)
     table = create_table(results)
     print(table)
