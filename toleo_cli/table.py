@@ -9,8 +9,8 @@ class SoftwareTable(prettytable.PrettyTable):
             status = 'OK'
         self.add_row([pkg.name,
                       src.name,
-                      pkg.version.evr,
-                      src.version.version,
+                      pkg.version,
+                      src.version,
                       status])
 
 
