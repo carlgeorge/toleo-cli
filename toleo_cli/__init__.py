@@ -6,20 +6,20 @@ from .table import create_table
 
 
 @click.command()
-@click.option('--collection', '-c', 'collection_name', default='default')
-def cli(collection_name):
+@click.option('-c', '--collection', 'collection_name', default='default')
+@click.option('-v', '--verbose', count=True)
+def cli(collection_name, verbose):
     ''' Entry point for application. '''
     xdg_config_home = pathlib.Path(xdg.BaseDirectory.xdg_config_home)
     config_dir = xdg_config_home / 'toleo'
     config = (config_dir / collection_name).with_suffix('.yaml')
     try:
         collection = toleo.Collection(config)
-    except OSError as err:
-        msg = 'no config for collection "{}" ({})'
-        raise click.ClickException(msg.format(config.stem, err.filename))
-    except AttributeError as err:
-        raise click.ClickException(err)
-    else:
         results = toleo.process(collection)
-        table = create_table(results)
-        print(table)
+    except toleo.ToleoException as e:
+        if verbose > 0:
+            raise e
+        else:
+            e.quit()
+    table = create_table(results)
+    print(table)
