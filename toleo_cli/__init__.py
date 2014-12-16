@@ -11,11 +11,13 @@ from .table import create_table
 def cli(collection_name, verbose):
     ''' Entry point for application. '''
     xdg_config_home = pathlib.Path(xdg.BaseDirectory.xdg_config_home)
+    xdg_cache_home = pathlib.Path(xdg.BaseDirectory.xdg_cache_home)
     config_dir = xdg_config_home / 'toleo'
+    cache_dir = xdg_cache_home / 'toleo'
     config = (config_dir / collection_name).with_suffix('.yaml')
     try:
         collection = toleo.Collection(config)
-        results = toleo.process(collection)
+        results = toleo.process(collection, cache_dir)
     except toleo.ToleoException as e:
         if verbose > 0:
             raise e
