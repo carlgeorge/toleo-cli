@@ -19,4 +19,5 @@ def create_table(results):
     for result in results:
         software, package = result
         table.add_software_row(software, package)
+    table.sortby = 'PACKAGE'
     return table
